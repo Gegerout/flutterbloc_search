@@ -50,16 +50,19 @@ class SearchPage extends StatelessWidget {
     final users = context.select((SearchBloc bloc) => bloc.state.users);
     return Column(
       children: [
+        const SizedBox(height: 10),
         const Text('Search'),
-        const SizedBox(height: 20),
-        TextFormField(
-          decoration: const InputDecoration(
-              hintText: 'enter username',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder()),
-          onChanged: (value) {
-            context.read<SearchBloc>().add(SearchUserEvent(value));
-          },
+        Padding(
+          padding: const EdgeInsets.all(14),
+          child: TextFormField(
+            decoration: InputDecoration(
+                hintText: 'enter username',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+            onChanged: (value) {
+              context.read<SearchBloc>().add(SearchUserEvent(value));
+            },
+          ),
         ),
         if (users.isNotEmpty)
           Expanded(
@@ -129,11 +132,12 @@ class UserInfoScreen extends StatelessWidget {
                 text: user.url ?? '',
                 style: const TextStyle(
                     color: Colors.blue, decoration: TextDecoration.underline),
-                recognizer: TapGestureRecognizer()..onTap = () {
-                  ScaffoldMessenger.of(context).showSnackBar(const  SnackBar(content: Text("Jumping")));
-                  launchUrl(user.url ?? '');
-                }
-            )
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(const SnackBar(content: Text("Jumping")));
+                    launchUrl(user.url ?? '');
+                  })
           ]))
         ],
       ),
